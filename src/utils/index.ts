@@ -17,14 +17,12 @@ export async function GetTheLatestCurrencies(): Promise<Currency[]> {
     });
 
   } catch (error: any) {
-    console.error(error)
     throw new Error(error);
   };
 }
 
 export async function GetTheExchangesList(): Promise<any[]> {
-  let bitcoin_api_url = COINMARKET_API_URL + 'exchange/info';
-  let result: Exchange[] = [];
+  const bitcoin_api_url = `${COINMARKET_API_URL}exchange/info`;
   try {
     let { data: { data } } = await axios
       .get(bitcoin_api_url, {
@@ -33,13 +31,11 @@ export async function GetTheExchangesList(): Promise<any[]> {
         },
       });
 
-    result = data.map((c: any) => {
+    return data.map((c: any) => {
       return new Exchange(c.id, c.name)
     });
 
   } catch (error: any) {
-    console.error(error)
+    throw new Error(error);
   };
-
-  return result;
 }
