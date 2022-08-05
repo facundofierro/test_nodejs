@@ -2,29 +2,27 @@ import axios from 'axios';
 import { Currency, Exchange } from '../model/currency.model';
 import { COINMARKET_API_KEY, COINMARKET_API_URL, COINMARKET_TOTAL_CURRENCIES } from '../config';
 
-export async function GetTheLatestCurrencies(): Promise<any[]> {
-  let bitcoin_api_url = COINMARKET_API_URL + 'cryptocurrency/listings/latest?limit=' + COINMARKET_TOTAL_CURRENCIES;
-  let result: Currency[] = [];
+export async function GetTheLatestCurrencies(): Promise<Currency[]> {
+  const bitcoin_api_url = `${COINMARKET_API_URL}cryptocurrency/listings/latest?limit=${COINMARKET_TOTAL_CURRENCIES}`;
   try {
-    let { data: { data } } = await axios
+    const { data: { data } } = await axios
       .get(bitcoin_api_url, {
         headers: {
           'X-CMC_PRO_API_KEY': COINMARKET_API_KEY
         },
       });
-
-    result = data.map((c: any) => {
+    console.log('getting data');
+    return data.map((c: any) => {
       return new Currency(c.id, c.name, c.symbol, c.total_supply, c.last_updated)
     });
 
   } catch (error: any) {
     console.error(error)
+    throw new Error(error);
   };
-
-  return result;
 }
 
-/* export async function GetTheExchangesList(): Promise<any[]> {
+export async function GetTheExchangesList(): Promise<any[]> {
   let bitcoin_api_url = COINMARKET_API_URL + 'exchange/info';
   let result: Exchange[] = [];
   try {
@@ -44,4 +42,4 @@ export async function GetTheLatestCurrencies(): Promise<any[]> {
   };
 
   return result;
-} */
+}

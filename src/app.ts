@@ -1,16 +1,18 @@
-import express from 'express';
+import express, { Request, Response, Application} from 'express';
 import { PORT } from './config';
 import { GetTheLatestCurrencies } from './utils';
+import { verifyCache, cache } from './middlewares/verifyCache';
 
 // Create express server
-const app: any = express();
+const app: Application = express();
 
-app.get("/ping", (req: any, res: any) => {
+app.get("/ping", (req: Request, res: Response) => {
   res.send('pong');
 });
 
-app.get("/criptos", async (req: any, res: any) => {
+app.get("/criptos", verifyCache, async (req: Request, res: Response) => {
   const currencies = await GetTheLatestCurrencies();
+  cache.set('currencies', currencies);
   res.json({ total: currencies.length, currencies });
 });
 
