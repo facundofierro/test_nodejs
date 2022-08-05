@@ -8,6 +8,7 @@ import helmet from 'helmet'
 const app: Application = express();
 
 app.use(helmet());
+app.disable('x-powered-by');
 
 app.get("/ping", (req: Request, res: Response) => {
   res.send('pong');
