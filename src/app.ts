@@ -2,9 +2,12 @@ import express, { Request, Response, Application} from 'express';
 import { PORT } from './config';
 import { GetTheLatestCurrencies } from './utils';
 import { verifyCache, cache } from './middlewares/verifyCache';
+import helmet from 'helmet'
 
 // Create express server
 const app: Application = express();
+
+app.use(helmet());
 
 app.get("/ping", (req: Request, res: Response) => {
   res.send('pong');

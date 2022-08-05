@@ -11,7 +11,6 @@ export async function GetTheLatestCurrencies(): Promise<Currency[]> {
           'X-CMC_PRO_API_KEY': COINMARKET_API_KEY
         },
       });
-    console.log('getting data');
     return data.map((c: any) => {
       return new Currency(c.id, c.name, c.symbol, c.total_supply, c.last_updated)
     });
